@@ -1,4 +1,6 @@
-process_data <- function(nwis_data){
+combine_data <- function(...){
+  nwis_data <- purrr:::map(list(...), readr::read_csv) %>% purrr::reduce(bind_rows)
+  
   nwis_data_clean <- rename(nwis_data, water_temperature = X_00010_00000) %>% 
     select(-agency_cd, -X_00010_00000_cd, tz_cd)
   
