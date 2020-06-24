@@ -7,8 +7,7 @@ combine_and_process_data <- function(out_file, ...){
   saveRDS(nwis_data_clean, out_file)
 }
 
-prepare_data_for_plot <- function(out_file, site_data_file, site_filename){
-  site_info <- read_csv(site_filename)
+prepare_data_for_plot <- function(out_file, site_data_file, site_info){
   annotated_data <- left_join(readRDS(site_data_file), site_info, by = "site_no") %>% 
     select(station_name = station_nm, site_no, dateTime, water_temperature, latitude = dec_lat_va, longitude = dec_long_va)
   styled_data <- annotated_data %>% 

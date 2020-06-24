@@ -39,16 +39,15 @@ targets:
       '1_fetch/out/site_data_01436690.csv',
       '1_fetch/out/site_data_01466500.csv')
   
-  1_fetch/out/site_info.csv:
+  site_info:
     command: nwis_site_info(
-      fileout = '1_fetch/out/site_info.csv', 
       site_data_file = '2_process/out/site_data.rds')
 
   2_process/out/site_data_plot.rds:
     command: prepare_data_for_plot(
       target_name, 
       site_data_file = '2_process/out/site_data.rds', 
-      site_filename = '1_fetch/out/site_info.csv')
+      site_info = site_info)
 
   3_visualize/out/figure_1.png:
     command: plot_nwis_timeseries(fileout = '3_visualize/out/figure_1.png', 
