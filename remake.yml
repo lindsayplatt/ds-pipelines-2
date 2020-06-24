@@ -31,7 +31,7 @@ targets:
     command: download_nwis_site_data(target_name)
   
   site_data:
-    command: combine_data(
+    command: combine_and_process_data(
       '1_fetch/out/site_data_01427207.csv',
       '1_fetch/out/site_data_01432160.csv',
       '1_fetch/out/site_data_01435000.csv',

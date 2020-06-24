@@ -1,4 +1,4 @@
-combine_data <- function(...){
+combine_and_process_data <- function(...){
   nwis_data <- purrr:::map(list(...), readr::read_csv) %>% purrr::reduce(bind_rows)
   
   nwis_data_clean <- rename(nwis_data, water_temperature = X_00010_00000) %>% 
