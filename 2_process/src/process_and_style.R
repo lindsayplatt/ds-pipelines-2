@@ -1,18 +1,18 @@
-combine_and_process_data <- function(...){
+combine_and_process_data <- function(out_file, ...){
   nwis_data <- purrr:::map(list(...), readr::read_csv) %>% purrr::reduce(bind_rows)
   
   nwis_data_clean <- rename(nwis_data, water_temperature = X_00010_00000) %>% 
     select(-agency_cd, -X_00010_00000_cd, tz_cd)
   
-  return(nwis_data_clean)
+  saveRDS(nwis_data_clean, out_file)
 }
 
-prepare_data_for_plot <- function(site_data_clean, site_filename){
+prepare_data_for_plot <- function(out_file, site_data_file, site_filename){
   site_info <- read_csv(site_filename)
-  annotated_data <- left_join(site_data_clean, site_info, by = "site_no") %>% 
+  annotated_data <- left_join(readRDS(site_data_file), site_info, by = "site_no") %>% 
     select(station_name = station_nm, site_no, dateTime, water_temperature, latitude = dec_lat_va, longitude = dec_long_va)
   styled_data <- annotated_data %>% 
     mutate(station_name = as.factor(station_name))
   
-  return(styled_data)
+  saveRDS(styled_data, out_file)
 }
