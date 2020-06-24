@@ -30,20 +30,25 @@ targets:
   1_fetch/out/site_data_01466500.csv:
     command: download_nwis_site_data(target_name)
   
-  site_data:
+  2_process/out/site_data.rds:
     command: combine_and_process_data(
+      target_name,
       '1_fetch/out/site_data_01427207.csv',
       '1_fetch/out/site_data_01432160.csv',
       '1_fetch/out/site_data_01435000.csv',
       '1_fetch/out/site_data_01436690.csv',
       '1_fetch/out/site_data_01466500.csv')
   
-  1_fetch/out/site_info.csv:
-    command: nwis_site_info(fileout = '1_fetch/out/site_info.csv', site_data)
+  site_info:
+    command: nwis_site_info(
+      site_data_file = '2_process/out/site_data.rds')
 
-  site_data_plot:
-    command: prepare_data_for_plot(site_data, site_filename = '1_fetch/out/site_info.csv')
+  2_process/out/site_data_plot.rds:
+    command: prepare_data_for_plot(
+      target_name, 
+      site_data_file = '2_process/out/site_data.rds', 
+      site_info = site_info)
 
   3_visualize/out/figure_1.png:
     command: plot_nwis_timeseries(fileout = '3_visualize/out/figure_1.png', 
-      site_data_plot)  
+      '2_process/out/site_data_plot.rds')  
